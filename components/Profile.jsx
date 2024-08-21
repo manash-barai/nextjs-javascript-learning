@@ -1,11 +1,11 @@
 import React from 'react'
 
-const loading = () => {
+const Profile = () => {
   return (
     <div>
-      ...Loading
+      
     </div>
   )
 }
 
-export default loading
+export default Profile
