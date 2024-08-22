@@ -1,57 +1,47 @@
-import NextAuth from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
-import { connectedDB } from '@utils/database'
-import User from '@models/user'
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+
+import User from '@models/user';
+import { connectToDB } from '@utils/database';
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+    })
   ],
   callbacks: {
     async session({ session }) {
-      try {
-        // Ensure the database connection
-        await connectedDB();
+      // store the user id from MongoDB to session
+      const sessionUser = await User.findOne({ email: session.user.email });
+      session.user.id = sessionUser._id.toString();
 
-        // Fetch the user from the database
-        const sessionUser = await User.findOne({ email: session.user.email });
-        if (sessionUser) {
-          // Assign the user's ID to the session
-          session.user.id = sessionUser._id.toString();
-        }
-        return session;
-      } catch (error) {
-        console.error("Error in session callback:", error);
-        return session; // Return the session even if there's an error
-      }
+      return session;
     },
-    async signIn({ profile }) {
+    async signIn({ account, profile, user, credentials }) {
       try {
-        // Ensure the database connection
-        await connectedDB();
+        await connectToDB();
 
-        // Check if the user already exists
+        // check if user already exists
         const userExists = await User.findOne({ email: profile.email });
 
-        // If the user doesn't exist, create a new user
+        // if not, create a new document and save user in MongoDB
         if (!userExists) {
           await User.create({
             email: profile.email,
-            username: profile.name.replace(/\s+/g, '').toLowerCase(),
+            username: profile.name.replace(" ", "").toLowerCase(),
             image: profile.picture,
           });
         }
 
-        return true; // Return true to allow sign-in
+        return true
       } catch (error) {
-        console.error("Error in signIn callback:", error);
-        return false; // Return false to deny sign-in
+        console.log("Error checking if user exists: ", error.message);
+        return false
       }
     },
-  },
-});
+  }
+})
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }

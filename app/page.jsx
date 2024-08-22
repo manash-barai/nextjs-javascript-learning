@@ -1,17 +1,22 @@
-import Feed from "@components/Feed"
+import Feed from "@components/Feed";
 
-const Home = () => {
-  return (
-    <section className="w-full flex-center flex-col">
-        <h1 className="head_text text-center"><span className="md-text-[17px]"> Discover & Share </span> 
-        <br className="max-md:hidden" />
-        <span className="orange_gradient text-center ">AI-Powered Prompts</span>
-        </h1>
-        <p className="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum recusandae accusamus ut sunt numquam earum, veniam inventore aperiam in quam aut rem modi vitae laborum tempore accusantium, assumenda debitis. Eligendi cupiditate neque eum, temporibus molestias veritatis quasi ea </p>
+const Home = () => (
+  <section className='w-full flex-center flex-col'>
+    <h1 className='head_text text-center'>
+      Discover & Share
+      <br className='max-md:hidden' />
+      <span className='orange_gradient text-center'> Prompts</span>
+    </h1>
+    <p className='desc text-center'>
 
-        <Feed/>
-    </section>
-  )
-}
+      
 
-export default Home
+      Curd is an open-source prompt saving edit and delete tool you can save 
+      your prompt and future use in chat gpt
+    </p>
+
+    <Feed />
+  </section>
+);
+
+export default Home;
