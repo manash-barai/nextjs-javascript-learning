@@ -22,7 +22,7 @@ const Nav = () => {
     <nav className='flex-between w-full mb-16 pt-3'>
       <Link href='/' className='flex gap-2 flex-center bg-cyan-700 py-2 px-5 shadow shadow-cyan-400'>
        
-        <p className='text-white font-bold drop-shadow-2xl shadow-black   '>CRUD</p>
+        <p className='text-white font-bold shadow-black rounded px-5 py-1    '>CRUD</p>
       </Link>
 
       {/* Desktop Navigation */}
